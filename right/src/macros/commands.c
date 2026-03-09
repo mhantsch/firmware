@@ -985,6 +985,9 @@ static macro_result_t processMacroArgCommand(parser_context_t* ctx)
         else if (ConsumeToken(ctx, "any")) {
             argType = MacroArgType_Any;
         }
+        else if (ConsumeToken(ctx, "template")) {
+            argType = MacroArgType_Template;
+        }
         else {
             Macros_ReportErrorTok(ctx, "Unrecognized macroArg argument type:");
             return MacroResult_Header;

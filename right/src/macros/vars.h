@@ -54,7 +54,8 @@
         MacroArgType_Bool,
         MacroArgType_String,
         MacroArgType_KeyId,
-        MacroArgType_ScanCode
+        MacroArgType_ScanCode,
+        MacroArgType_Template,
     } macro_argument_type_t;
 
     typedef struct {
