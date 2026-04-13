@@ -731,6 +731,13 @@ static key_action_t parseKeyAction(parser_context_t* ctx)
         ConsumeWhite(ctx);
     }
     else if (ConsumeToken(ctx, "keystroke")) {
+        // TODO: Allow $macroArg.xxx for type scancode ("modded scancode") here as well.
+        // - check for $
+        // - if found, call Macros_ConsumeString() to get a string segment (uses consumeValue())
+        // - parse that string segment as a shortcut (with MacroShortcutParser_Parse) to get the scancode and modifiers
+
+        // TODO: add parsing of secondary role actions here as well.
+
         const char* end = TokEnd(ctx->at, ctx->end);
         MacroShortcutParser_Parse(ctx->at, end, MacroSubAction_Press, NULL, &action);
 

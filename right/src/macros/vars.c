@@ -1185,27 +1185,15 @@ static macro_variable_t consumeArgumentAsValue(parser_context_t* ctx) {
         return noneVar();
     }
 
-    if (argType == MacroArgType_Any) {
-        // for type 'any', consume the value as a template expansion (i.e. like &macroArg)
+    if (argType == MacroArgType_Template) {
+        // for type 'template', consume the value as a template expansion (i.e. like &macroArg)
         // for compatibility with existing macros that don't declare their argument types.
 
-#if 0
         // TODO: This doesn't work; it will cause firmware crashes.
         // I don't understand why.
+        
         PushParserContext(ctx, str.start, str.start, str.end);
         return consumeValue(ctx);
-#else
-        parser_context_t varCtx = (parser_context_t) {
-            .at = str.start,
-            .begin = str.start,
-            .end = str.end,
-            .macroState = ctx->macroState,
-            .nestingLevel = ctx->nestingLevel,
-            .nestingBound = ctx->nestingBound,
-        };
-
-        return consumeValue(&varCtx);
-#endif
     } else {
         // for declared types, consume the value according to type.
         parser_context_t varCtx = (parser_context_t) {
@@ -1218,6 +1206,8 @@ static macro_variable_t consumeArgumentAsValue(parser_context_t* ctx) {
         };
     
         switch (argType) {
+        case MacroArgType_Any:
+            return consumeValue(&varCtx);
         case MacroArgType_Int:
             return consumeIntValue(&varCtx);
         case MacroArgType_Float:
